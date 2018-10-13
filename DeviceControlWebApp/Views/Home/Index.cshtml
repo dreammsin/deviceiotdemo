@@ -41,13 +41,19 @@
                     @{
                         if (ViewBag.cloudStatus)
                         {
-                            <span class="btn btn-info active">ON</span>
-                            @Html.ActionLink("OFF", "SendToCloudOff", new { }, new { @class = "btn btn-secondary" })
+                            using (Html.BeginForm("SendToCloudOff", "Home"))
+                            {
+                                <span class="btn btn-primary active">ON</span>
+                                <input class="btn btn-secondary" type="submit" value="OFF" />
+                            }
                         }
                         else
                         {
-                            @Html.ActionLink("ON", "SendToCloudOn", new { }, new { @class = "btn btn-secondary" })
-                            <span class="btn btn-info active">OFF</span>
+                            using (Html.BeginForm("SendToCloudOn", "Home"))
+                            {
+                                <input class="btn btn-secondary" type="submit" value="ON" />
+                                <span class="btn btn-primary active">OFF</span>
+                            }
                         }
                     }
                 </div>
@@ -125,14 +131,15 @@
         <tr>
             <th scope="row">Bright Light</th>
             <td>
-                @{
+                @using (Html.BeginForm("ToggleLamp", "Home"))
+                {
                     if (ViewBag.lampStatus)
                     {
-                        @Html.ActionLink("Turn lamp OFF", "ToggleLamp", new { }, new { @class = "btn btn-primary" })
+                        <input class="btn btn-primary" type="submit" value="Turn Lamp OFF" />
                     }
                     else
                     {
-                        @Html.ActionLink("Turn lamp ON", "ToggleLamp", new { }, new { @class = "btn btn-outline-primary" })
+                        <input class="btn btn-outline-primary" type="submit" value="Turn Lamp ON" />
                     }
                 }
             </td>
@@ -151,17 +158,17 @@
             </td>
         </tr>
         <tr>
-            <th scope="row">Flash LED</th>
+            <th scope="row">Flash LED Once</th>
             <td>
                 @using (Html.BeginForm("FlashBlueLED", "Home"))
                 {
                     <div class="input-group mb-3">
-                        <input type="text" id="f" name="flashInput" placeholder="milliseconds" class="form-control" value="@ViewBag.flashTime"/>
+                        <input type="text" id="f" name="flashInput" placeholder="milliseconds" class="form-control" value="@ViewBag.flashTime" />
                         <div class="input-group-append">
-                            <input class="btn btn-outline-primary" type="submit" value="FlashBlueLED" />
+                            <input class="btn btn-outline-primary" type="submit" value="Flash Blue" />
                         </div>
                     </div>
-                    
+
                 }
             </td>
             <td>
@@ -176,12 +183,29 @@
                     }
                 }
                 @ViewBag.blueStatus
-                <br />@ViewBag.Message
+                <br />@ViewBag.Message ms
             </td>
         </tr>
     </tbody>
 </table>
 
-<div class="alert alert-danger" role="alert">
-    @ViewBag.Err
+<div class="badge badge-secondary btn-sm">
+    @{
+        if (ViewBag.inAuto)
+        {
+            using (Html.BeginForm("StopAutomate", "Home"))
+            {
+                <span class="btn btn-warning active">ON</span>
+                <input class="btn btn-secondary" type="submit" value="OFF" />
+            }
+        }
+        else
+        {
+            using (Html.BeginForm("StartAutomate", "Home"))
+            {
+                <input class="btn btn-secondary" type="submit" value="ON" />
+                <span class="btn btn-primary active">OFF</span>
+            }
+        }
+    }
 </div>

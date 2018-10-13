@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -17,9 +18,13 @@ namespace DeviceControlWebApp.Controllers
         private const string ParticleApi = "https://api.particle.io/v1/devices/";
         private string deviceCall = "{devicename}/{function}/?access_token={accesstoken}";
         private static RestClient restClient;
+        private static CancellationTokenSource tokenSource;
+        public static bool inAutomation { get; set; }
 
         static HomeController()
         {
+            inAutomation = false;
+            tokenSource = new CancellationTokenSource();
             // Rest client that is used to exercise Particle.io api
             restClient = new RestClient(ParticleApi);
             restClient.AddDefaultUrlSegment("devicename", DeviceName);
@@ -29,6 +34,7 @@ namespace DeviceControlWebApp.Controllers
         public async Task<ActionResult> Index()
 
         {
+            ViewBag.inAuto = inAutomation;
             // Get all status from Particle.io
             var photoLevelR = await restClient.ExecuteGetTaskAsync<VariableResponse<int>>(new RestRequest(deviceCall).AddUrlSegment("function", "photoLevel"));
             var flashTimeR = restClient.ExecuteGetTaskAsync<VariableResponse<int>>(new RestRequest(deviceCall).AddUrlSegment("function", "flashTime"));
@@ -92,6 +98,54 @@ namespace DeviceControlWebApp.Controllers
                 ViewBag.Err = "Value is invalid: '" + timeInput;
             }
             return RedirectToAction("Index");
+        }
+
+        public async Task<ActionResult> StartAutomate()
+        {
+            inAutomation = true;
+            ViewBag.inAuto = inAutomation;
+            await restClient.ExecutePostTaskAsync(new RestRequest(deviceCall).AddUrlSegment("function", "toCloudON"));
+            var t = Task.Run(async delegate
+            {
+                await AutomationLoop(tokenSource.Token);
+            });
+            return RedirectToAction("Index");
+        }
+        public async Task<ActionResult> StopAutomate()
+        {
+            inAutomation = false;
+            ViewBag.inAuto = inAutomation;
+            await restClient.ExecutePostTaskAsync(new RestRequest(deviceCall).AddUrlSegment("function", "toCloudOFF"));
+            tokenSource.Cancel();
+            tokenSource.Dispose();
+            return RedirectToAction("Index");
+        }
+
+        private async Task AutomationLoop(CancellationToken token)
+        {
+            Random newRand = new Random();
+            int newSpan = newRand.Next(300);    //wait time
+            int flashD = newSpan * 1000;     //flash time
+            var nextT = DateTime.Now.AddSeconds(newSpan);
+            var currentT = DateTime.Now;
+            while (inAutomation)
+            {
+                if (currentT <= nextT)
+                {
+                    //do nothing
+                    System.Threading.Thread.Sleep(100);
+
+                }
+                else
+                {
+                    await restClient.ExecutePostTaskAsync(new RestRequest(deviceCall).AddUrlSegment("function", "toggleLamp"));
+                    await restClient.ExecutePostTaskAsync(new RestRequest(deviceCall).AddUrlSegment("function", "flashBlue").AddHeader("content-type", "application/json").AddJsonBody(new { args = flashD.ToString() }));
+                    newSpan = newRand.Next(300);    //wait time
+                    flashD = newSpan * 1000;     //flash time
+                    nextT = DateTime.Now.AddSeconds(newSpan);
+                }
+                currentT = DateTime.Now;
+            }
         }
     }
 

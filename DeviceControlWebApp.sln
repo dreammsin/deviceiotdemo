@@ -5,11 +5,6 @@ VisualStudioVersion = 15.0.27703.2035
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeviceControlWebApp", "DeviceControlWebApp\DeviceControlWebApp.csproj", "{97B35353-10B5-4029-A660-7C4BE1CB65EC}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "particle.io", "particle.io", "{F10403E8-1CEE-40E7-A4C1-1309B498C1C0}"
-	ProjectSection(SolutionItems) = preProject
-		..\..\..\Documents\Presentations\IndustrialBEControls.20181005\clouddeviceconnect.ino = ..\..\..\Documents\Presentations\IndustrialBEControls.20181005\clouddeviceconnect.ino
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
