@@ -133,7 +133,7 @@ namespace DeviceControlWebApp.Controllers
                 if (currentT <= nextT)
                 {
                     //do nothing
-                    System.Threading.Thread.Sleep(100);
+                    await Task.Delay(100);
 
                 }
                 else
