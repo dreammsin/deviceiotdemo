@@ -153,13 +153,16 @@
         <tr>
             <th scope="row">Flash LED</th>
             <td>
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="Duration in milliseconds" aria-label="FlashDuration">
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-primary" type="button" id="button-addon2">@Html.ActionLink("Flash", "FlashBlueLED")</button>
-
+                @using (Html.BeginForm("FlashBlueLED", "Home"))
+                {
+                    <div class="input-group mb-3">
+                        <input type="text" id="f" name="flashInput" placeholder="milliseconds" class="form-control" value="@ViewBag.flashTime"/>
+                        <div class="input-group-append">
+                            <input class="btn btn-outline-primary" type="submit" value="FlashBlueLED" />
+                        </div>
                     </div>
-                </div>
+                    
+                }
             </td>
             <td>
                 @{
@@ -173,7 +176,12 @@
                     }
                 }
                 @ViewBag.blueStatus
+                <br />@ViewBag.Message
             </td>
         </tr>
     </tbody>
 </table>
+
+<div class="alert alert-danger" role="alert">
+    @ViewBag.Err
+</div>
