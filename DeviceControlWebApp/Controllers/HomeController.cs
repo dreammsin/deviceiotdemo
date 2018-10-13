@@ -9,12 +9,6 @@ using System.Web.Mvc;
 
 namespace DeviceControlWebApp.Controllers
 {
-    public class Device
-    {
-        public int flashTimer { get; set; }
-        public string flashMsg { get; set; }
-    }
-
     public class HomeController : Controller
     {
         private const string DeviceID = "1a002b001247343432313031";
@@ -23,8 +17,6 @@ namespace DeviceControlWebApp.Controllers
         private const string ParticleApi = "https://api.particle.io/v1/devices/";
         private string deviceCall = "{devicename}/{function}/?access_token={accesstoken}";
         private static RestClient restClient;
-
-        //public static Device device = new Device();
 
         static HomeController()
         {
@@ -50,8 +42,6 @@ namespace DeviceControlWebApp.Controllers
             await Task.WhenAll(flashTimeR, lampStatusR, sendToCloudR, blueStatusR, redStatusR, cloudStatusR, manualStatusR);
 
             // Assign to View variables for display
-            //ViewData[photoLevelR.Result.Data.name] = photoLevelR.Result.Data.result;
-            //ViewData[lampStatusR.Result.Data.name] = lampStatusR.Result.Data.result;
             ViewBag.deviceID = DeviceID;
             ViewBag.deviceName = DeviceName;
             ViewBag.photoLevel = photoLevelR.Data.result;
@@ -62,12 +52,7 @@ namespace DeviceControlWebApp.Controllers
             ViewBag.redStatus = redStatusR.Result.Data.result;
             ViewBag.cloudStatus = cloudStatusR.Result.Data.result;
             ViewBag.manualStatus = manualStatusR.Result.Data.result;
-            //ViewBag.flashDuration = ViewBag.flashTime;
-            //ViewBag.flashMsg = "Flash time: " + ViewBag.flashTime;
-            //ViewData["flash"] = ViewBag.flashTime;
-            ViewBag.Message = "Initial Flash time: " + ViewBag.flashTime;
-            //device.flashTimer = ViewBag.flashTime;
-            //device.flashMsg = "Flash time: " + ViewBag.flashTime;
+            ViewBag.Message = "Flash time: " + ViewBag.flashTime;
 
             // Render view
             return View();
@@ -103,7 +88,6 @@ namespace DeviceControlWebApp.Controllers
             }
             else
             {
-                //ViewData["msg"] = "Value is invalid: '" + timeInput + "'. Using duration: " ;
                 await restClient.ExecutePostTaskAsync(new RestRequest(deviceCall).AddUrlSegment("function", "flashBlue"));
                 ViewBag.Err = "Value is invalid: '" + timeInput;
             }
