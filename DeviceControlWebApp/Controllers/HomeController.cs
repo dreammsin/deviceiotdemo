@@ -25,7 +25,6 @@ namespace DeviceControlWebApp.Controllers
         static HomeController()
         {
             inAutomation = false;
-            //tokenSource = new CancellationTokenSource();
             // Rest client that is used to exercise Particle.io api
             restClient = new RestClient(ParticleApi);
             restClient.AddDefaultUrlSegment("devicename", DeviceName);
