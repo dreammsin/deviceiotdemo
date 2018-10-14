@@ -18,13 +18,13 @@ namespace DeviceControlWebApp.Controllers
         private const string ParticleApi = "https://api.particle.io/v1/devices/";
         private string deviceCall = "{devicename}/{function}/?access_token={accesstoken}";
         private static RestClient restClient;
-        private static CancellationTokenSource tokenSource;
+        private static CancellationTokenSource tokenSource = new CancellationTokenSource();
         public static bool inAutomation { get; set; }
 
         static HomeController()
         {
             inAutomation = false;
-            tokenSource = new CancellationTokenSource();
+            //tokenSource = new CancellationTokenSource();
             // Rest client that is used to exercise Particle.io api
             restClient = new RestClient(ParticleApi);
             restClient.AddDefaultUrlSegment("devicename", DeviceName);
