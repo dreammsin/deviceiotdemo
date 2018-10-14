@@ -124,7 +124,7 @@ namespace DeviceControlWebApp.Controllers
         private async Task AutomationLoop(CancellationToken token)
         {
             Random newRand = new Random();
-            int newSpan = newRand.Next(300);    //wait time
+            int newSpan = Math.Min(30,newRand.Next(900)) ;    //wait time
             int flashD = newSpan * 1000;     //flash time
             var nextT = DateTime.Now.AddSeconds(newSpan);
             var currentT = DateTime.Now;
