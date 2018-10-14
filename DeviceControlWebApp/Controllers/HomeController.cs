@@ -7,14 +7,15 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Configuration;
 
 namespace DeviceControlWebApp.Controllers
 {
     public class HomeController : Controller
     {
-        private const string DeviceID = "1a002b001247343432313031";
-        private const string DeviceName = "monkey_hunter";
-        private const string useToken = "79141e26e2e8005c1dbb03d5eba780f479bf9cb3";
+        private static string DeviceID = ConfigurationManager.AppSettings["DeviceID"];
+        private static string DeviceName = ConfigurationManager.AppSettings["DeviceName"];
+        private static string DeviceToken = ConfigurationManager.AppSettings["DeviceToken"];
         private const string ParticleApi = "https://api.particle.io/v1/devices/";
         private string deviceCall = "{devicename}/{function}/?access_token={accesstoken}";
         private static RestClient restClient;
@@ -28,7 +29,7 @@ namespace DeviceControlWebApp.Controllers
             // Rest client that is used to exercise Particle.io api
             restClient = new RestClient(ParticleApi);
             restClient.AddDefaultUrlSegment("devicename", DeviceName);
-            restClient.AddDefaultUrlSegment("accesstoken", useToken);
+            restClient.AddDefaultUrlSegment("accesstoken", DeviceToken);
         }
 
         public async Task<ActionResult> Index()
