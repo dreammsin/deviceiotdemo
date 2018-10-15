@@ -35,6 +35,93 @@
             </td>
         </tr>
         <tr>
+            <th scope="row">Photoresistor</th>
+            <td></td>
+            <td>
+                @{
+                    var currentLevel = (ViewBag.photoLevel / 4000m) * 100;
+                }
+                <div class="progress">
+                    <div class="progress-bar bg-success" role="progressbar" style="width: @currentLevel%" aria-valuenow="@currentLevel" aria-valuemin="0" aria-valuemax="4000">@ViewBag.photoLevel</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">Light Level Sensor</th>
+            <td></td>
+            <td>
+                @{
+                    if (ViewBag.redStatus)
+                    {
+                        <span class="badge badge-pill badge-danger">on</span>
+                    }
+                    else
+                    {
+                        <span class="badge badge-pill badge-secondary">off</span>
+                    }
+                }
+                @ViewBag.redStatus
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">Flash LED Once</th>
+            <td>
+                @using (Html.BeginForm("FlashBlueLED", "Home"))
+                {
+                    <div class="input-group mb-3">
+                        <input type="text" id="f" name="flashInput" placeholder="milliseconds" class="form-control" value="@ViewBag.flashTime" />
+                        <div class="input-group-append">
+                            <input class="btn btn-outline-primary" type="submit" value="Flash Blue" />
+                        </div>
+                    </div>
+
+                }
+            </td>
+            <td>
+                @{
+                    if (ViewBag.blueStatus)
+                    {
+                        <span class="badge badge-pill badge-primary">on</span>
+                    }
+                    else
+                    {
+                        <span class="badge badge-pill badge-secondary">off</span>
+                    }
+                }
+                @ViewBag.blueStatus
+                <br />@ViewBag.Message ms
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">Bright Light</th>
+            <td>
+                @using (Html.BeginForm("ToggleLamp", "Home"))
+                {
+                    if (ViewBag.lampStatus)
+                    {
+                        <input class="btn btn-primary" type="submit" value="Turn Lamp OFF" />
+                    }
+                    else
+                    {
+                        <input class="btn btn-outline-primary" type="submit" value="Turn Lamp ON" />
+                    }
+                }
+            </td>
+            <td>
+                @{
+                    if (ViewBag.lampStatus)
+                    {
+                        <span class="badge badge-pill badge-warning">on</span>
+                    }
+                    else
+                    {
+                        <span class="badge badge-pill badge-secondary">off</span>
+                    }
+                }
+                @ViewBag.lampStatus
+            </td>
+        </tr>
+        <tr>
             <th scope="row">Send to Cloud Switch</th>
             <td>
                 <div class="badge badge-secondary">
@@ -97,93 +184,6 @@
                     }
                 </div>
                 @ViewBag.manualStatus
-            </td>
-        </tr>
-        <tr>
-            <th scope="row">Photoresistor</th>
-            <td></td>
-            <td>
-                @{
-                    var currentLevel = (ViewBag.photoLevel / 4000m) * 100;
-                }
-                <div class="progress">
-                    <div class="progress-bar bg-success" role="progressbar" style="width: @currentLevel%" aria-valuenow="@currentLevel" aria-valuemin="0" aria-valuemax="4000">@ViewBag.photoLevel</div>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <th scope="row">Light Level Sensor</th>
-            <td></td>
-            <td>
-                @{
-                    if (ViewBag.redStatus)
-                    {
-                        <span class="badge badge-pill badge-danger">on</span>
-                    }
-                    else
-                    {
-                        <span class="badge badge-pill badge-secondary">off</span>
-                    }
-                }
-                @ViewBag.redStatus
-            </td>
-        </tr>
-        <tr>
-            <th scope="row">Bright Light</th>
-            <td>
-                @using (Html.BeginForm("ToggleLamp", "Home"))
-                {
-                    if (ViewBag.lampStatus)
-                    {
-                        <input class="btn btn-primary" type="submit" value="Turn Lamp OFF" />
-                    }
-                    else
-                    {
-                        <input class="btn btn-outline-primary" type="submit" value="Turn Lamp ON" />
-                    }
-                }
-            </td>
-            <td>
-                @{
-                    if (ViewBag.lampStatus)
-                    {
-                        <span class="badge badge-pill badge-warning">on</span>
-                    }
-                    else
-                    {
-                        <span class="badge badge-pill badge-secondary">off</span>
-                    }
-                }
-                @ViewBag.lampStatus
-            </td>
-        </tr>
-        <tr>
-            <th scope="row">Flash LED Once</th>
-            <td>
-                @using (Html.BeginForm("FlashBlueLED", "Home"))
-                {
-                    <div class="input-group mb-3">
-                        <input type="text" id="f" name="flashInput" placeholder="milliseconds" class="form-control" value="@ViewBag.flashTime" />
-                        <div class="input-group-append">
-                            <input class="btn btn-outline-primary" type="submit" value="Flash Blue" />
-                        </div>
-                    </div>
-
-                }
-            </td>
-            <td>
-                @{
-                    if (ViewBag.blueStatus)
-                    {
-                        <span class="badge badge-pill badge-primary">on</span>
-                    }
-                    else
-                    {
-                        <span class="badge badge-pill badge-secondary">off</span>
-                    }
-                }
-                @ViewBag.blueStatus
-                <br />@ViewBag.Message ms
             </td>
         </tr>
     </tbody>

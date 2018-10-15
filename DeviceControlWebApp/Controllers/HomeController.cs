@@ -13,9 +13,9 @@ namespace DeviceControlWebApp.Controllers
 {
     public class HomeController : Controller
     {
-        private static string DeviceID = ConfigurationManager.AppSettings["DeviceID"];
-        private static string DeviceName = ConfigurationManager.AppSettings["DeviceName"];
-        private static string DeviceToken = ConfigurationManager.AppSettings["DeviceToken"];
+        private static string DeviceID = ConfigurationManager.AppSettings["DeviceID"] ?? "";
+        private static string DeviceName = ConfigurationManager.AppSettings["DeviceName"] ?? "";
+        private static string DeviceToken = ConfigurationManager.AppSettings["DeviceToken"] ?? "";
         private const string ParticleApi = "https://api.particle.io/v1/devices/";
         private string deviceCall = "{devicename}/{function}/?access_token={accesstoken}";
         private static RestClient restClient;
